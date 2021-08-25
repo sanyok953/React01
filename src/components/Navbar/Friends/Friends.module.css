@@ -1,0 +1,26 @@
+.friendsWrapper {
+  width: 100%;
+}
+
+.friends {
+	float:left;
+  margin:2px;
+  width:40px;
+}
+
+.name {
+  width:40px;
+}
+
+.title {
+  color:ivory;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+  background-color: cadetblue;
+  margin:12px 2px 2px 2px;
+}
+
+.friends img {
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
+}

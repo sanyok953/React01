@@ -1,0 +1,8 @@
+
+.content img {
+	object-fit: cover;
+}
+
+.descriptionBlock {
+	padding: 10px;
+}

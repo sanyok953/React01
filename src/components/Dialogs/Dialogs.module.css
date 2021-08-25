@@ -1,0 +1,63 @@
+.dialogs {
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+}
+
+.dialogsItems {
+  padding: 10px;
+}
+
+.sendMessageArea {
+  display: grid;
+  margin: 12px;
+  grid-template-columns: 11fr 1fr;
+}
+
+.sendMessageArea textarea {
+  width:100%;
+}
+
+.sendMessageArea button {
+  margin: 30% 50%;
+  transform: translate(-30%, -50%);
+}
+
+.active {
+  color: gold !important;
+}
+
+.activeD {
+  color: green !important;
+}
+
+.dialog a {
+  color: chocolate;
+  text-decoration: none;
+}
+
+.dialog a div {
+  display:inline-block;
+  position: relative;
+  top: -10px;
+  left: 4px;
+}
+
+.messages {
+  padding: 10px;
+  background:tan;
+}
+
+.dialogsImg {
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
+  margin:0 3px;
+}
+
+.right {
+  text-align: right;
+}
+
+.left {
+  text-align: left;
+}

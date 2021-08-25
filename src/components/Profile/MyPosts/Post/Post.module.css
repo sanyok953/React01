@@ -1,0 +1,11 @@
+.item {
+	color: midnightblue;
+	border:1px solid blue;
+	margin:4px 0;
+}
+
+.item img {
+	width: 70px;
+	height: 70px;
+	border-radius: 35px;
+}
