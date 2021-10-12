@@ -1,22 +1,27 @@
 import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import store from './redux/state';
-import React from 'react';
+import store from './redux/reduxStore';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { Provider } from 'react-redux';
 
-let rendererEntireTree = (state) => {
+//let rendererEntireTree = () => {
   ReactDOM.render(
-    <React.StrictMode>
-      <App state={state} dispatch={store.dispatch.bind(store)} />
-      {/* т к addPost колбек значит байндим его и назначает владельца store этого метода */}
-    </React.StrictMode>,
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>,
     document.getElementById('root')
   )
-}
-rendererEntireTree(store.getState()) // Первая отрисовка
+//}
+//rendererEntireTree() // Первая отрисовка
 // Вызвали функцию от state и передали текущую функцию для перерисовки, state может вызвать эту функцию когда ему будет нужно
-store.subscribe(rendererEntireTree)
+/*store.subscribe(() => {
+  //let state = store.getState()
+  rendererEntireTree()
+})*/
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,0 +1,47 @@
+.wrapper {
+  border:1px solid gray;
+  margin: 0 0 2px 0;
+  padding:4px;
+}
+
+.phWrap {
+  display: inline-block;
+}
+
+.photo {
+  width: 48px;
+  height: 48px;
+}
+
+.inWrap {
+  display:inline-block;
+  height:100%;
+}
+
+.names {
+  display: inline-block;
+}
+
+.location {
+  float: right;
+}
+
+.selectedPage {
+  font-weight: bold;
+  background: tomato;
+}
+
+.pg {
+  font-weight: normal;
+  background: wheat;
+  color:black;
+  margin:2px;
+}
+
+.pgn {
+  margin:2px 4px;
+  cursor: pointer;
+  padding: 0 1px;
+  border-radius: 3px;
+
+}

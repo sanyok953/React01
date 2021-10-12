@@ -1,34 +1,36 @@
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import './App.css';
-import Dialogs from './components/Dialogs/Dialogs';
+import DialogsContainer from './components/Dialogs/DialogsContainer';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
-import Profile from './components/Profile/Profile';
+import ProfileContainer from './components/Profile/ProfileContainer';
+import UsersContainer from './components/Users/UsersContainer';
 
-const App = (props) => {
+const App = () => {
+	//console.log(props)
 	return (
-		<BrowserRouter>
 			<div className='app-wrapper'>
 				<Header />
-				<Navbar state={props.state.navBar} />
+				<Navbar />
 				<div className='app-wrapper-content'>
 					<Route path='/dialogs'
-						render={() => <Dialogs
-							dialogsPage={props.state.dialogsPage}
-							dispatch={props.dispatch}
-						/>}
+						render={ () => <DialogsContainer /> }
 					/>
-					<Route path='/profile'
-						render={() => <Profile
-							profilePage={props.state.profilePage}
-							dispatch={props.dispatch}
-						/>
-						}
+					<Route path='/profile/:userId?'
+						render={ () => <ProfileContainer /> }
+					/>
+					<Route path='/users/:page?'
+						render={ () => <UsersContainer /> }
 					/>
 				</div>
 			</div>
-		</BrowserRouter>
 	);
 }
+
+/* store={props.store.navBar} */
+
+/* store={props.store} */
+
+/* store={props.store} */
 
 export default App;
