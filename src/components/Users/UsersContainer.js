@@ -1,46 +1,37 @@
 import React from 'react'
 import { connect } from "react-redux"
-import * as axios from 'axios'
-import { follow, unfollow, setUsers, setPage, setTotalUsersCount, setFetching } from "../../redux/usersReducer"
+import { setUsers, setPage, toggleFollowingProgress, getUsers, followThunk, unfollowThunk } from "../../redux/usersReducer"
 import Users from './Users'
 import Preloader from '../common/Preloader/Preloader'
 import { withRouter } from 'react-router-dom'
+//import { UsersAPI } from '../../api/api'
+//import thunk from 'redux-thunk'
+
 
 // Container second network requests
 class UsersContainer extends React.Component {
 
   componentDidMount() {
-    let pg = 1
-    if(this.props.match.params === undefined || this.props.match.params.page === undefined)
-      pg = this.props.currentPage
-    else {
-      pg = Number.parseInt(this.props.match.params.page)
-      this.onPageChanged(pg)
+    let currentPage = 1
+    if(this.props.match.params === undefined || this.props.match.params.page === undefined) {
+      currentPage = this.props.currentPage
+      this.props.getUsers(currentPage, this.props.pageSize)
+      console.log("Mount")
+    } else {
+      currentPage = Number.parseInt(this.props.match.params.page)
+      this.onPageChanged(currentPage)
+      console.log("PageCh")
     }
-
-    this.props.setFetching(true)
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pg}&count=${this.props.pageSize}`)
-    .then(response => {
-      console.log("Mount ", response)
-      this.props.setUsers(response.data.items)
-      this.props.setTotalUsersCount(response.data.totalCount)
-      this.props.setFetching(false)
-    })
+    
   }
 
   componentWillUnmount() {
     this.props.setUsers([])
   }
 
-  onPageChanged = pageNumber => {
-    this.props.setPage(pageNumber)
-    this.props.setFetching(true)
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
-    .then(response => {
-      //console.log("Mount ", response)
-      this.props.setUsers(response.data.items)
-      this.props.setFetching(false)
-    })
+  onPageChanged = currentPage => {
+    this.props.setPage(currentPage)
+    this.props.getUsers(currentPage, this.props.pageSize)
   }
 
   render() { // Вызывает connect
@@ -71,16 +62,18 @@ class UsersContainer extends React.Component {
       }
 
     }
+    
     return (
       <>
         {this.props.isFetching ? <Preloader /> :
         <Users
           pages={pages}
           users={this.props.users}
-          unfollow={this.props.unfollow}
-          follow={this.props.follow}
+          followThunk={this.props.followThunk}
+          unfollowThunk={this.props.unfollowThunk}
           currentPage={this.props.currentPage}
           onPageChanged={this.onPageChanged}
+          followingInProgress = {this.props.followingInProgress}
         />
         }
       </>
@@ -96,38 +89,16 @@ let mapStateToProps = state => {
     pageSize: state.usersPage.pageSize,
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching
+    isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress
   }
 }
 
-/*let mapDispatchToProps = dispatch => {
-  return {
-    follow: userId => {
-      dispatch(followAC(userId))
-    },
-    unfollow: userId => {
-      dispatch(unfollowAC(userId))
-    },
-    setUsers: users => {
-      dispatch(setUsersAC(users))
-    },
-    setCurrentPage: page => {
-      dispatch(setPageAC(page))
-    },
-    setTotalUsersCount: tc => {
-      dispatch(setTotalCountAC(tc))
-    },
-    setFetching: fetch => {
-      dispatch(setFetching(fetch))
-    }
-  }
-}*/
-
 let WithUserDataContainerComponent = withRouter(UsersContainer)
-
 export default connect(mapStateToProps, 
   {
-    follow, unfollow, setUsers,
-    setPage, setTotalUsersCount, setFetching
+    setUsers, followThunk,
+    setPage, unfollowThunk,
+    toggleFollowingProgress, getUsers
   }
 )(WithUserDataContainerComponent)

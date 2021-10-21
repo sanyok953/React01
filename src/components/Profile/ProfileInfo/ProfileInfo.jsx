@@ -2,7 +2,6 @@ import s from './ProfileInfo.module.css'
 import userPhoto from '../../../assets/images/user.jpg'
 
 const ProfileInfo = props => {
-	console.log(props.profile)
 	let img = userPhoto
 	if(!(!props.profile || !props.profile.photos || !props.profile.photos.small))
 		img = props.profile.photos.small
