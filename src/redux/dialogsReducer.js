@@ -1,4 +1,3 @@
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY'
 const SEND_MESSAGE = 'SEND-MESSAGE'
 
 let initialState = {
@@ -15,8 +14,7 @@ let initialState = {
     { id: 2, name: 'Ivan' },
     { id: 3, name: 'Svetlana' },
     { id: 4, name: 'Igor' }
-  ],
-  newMessageBody: 'Hello'
+  ]
 }
 
 const dialogsReducer = (state = initialState, action) => {
@@ -24,16 +22,9 @@ const dialogsReducer = (state = initialState, action) => {
   //let stateCopy
 
   switch (action.type) {
-    case UPDATE_NEW_MESSAGE_BODY:
-      return {
-        ...state,
-        newMessageBody: action.body
-      }
-      // stateCopy.newMessageBody = action.body // Можно и так присвоить значение как при копировании выше
-      //return stateCopy
     
     case SEND_MESSAGE:
-      let body = state.newMessageBody
+      let body = action.message //state.newMessageBody
 
       if (body === '') {
         console.log('Message is empty')
@@ -52,30 +43,15 @@ const dialogsReducer = (state = initialState, action) => {
           }
         ] // Если в Dialogs передаём сразу dialogsPage тогда это не копируем
       }
-      //let body = stateCopy.newMessageBody
-      /*if (body === '') {
-        console.log('Message is empty')
-        return state
-      }*/
-      /*let mess = {
-        id: stateCopy.messages.length,
-        send: true,
-        message: body
-      }
-      stateCopy.newMessageBody = ''
-      stateCopy.messages.push(mess)
-      return stateCopy*/
     
     default:
       return state
   }
 }
 
-export const addMessageActionCreator = () => ({ type: SEND_MESSAGE }) // 
-
-export const updateNewMessageActionCreator = body => ({ // Изменение поля ввода в Dialogs
-  type: UPDATE_NEW_MESSAGE_BODY,
-  body: body
+export const addMessage = message => ({
+  type: SEND_MESSAGE,
+  message
 })
 
 export default dialogsReducer

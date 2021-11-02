@@ -1,29 +1,23 @@
 import React from 'react'
-import { addPost, updateNewPost, setUserProfile } from './../../redux/profileReducer'
+import { addPost, getStatus, getUserProfile, updateStatus } from './../../redux/profileReducer'
 import Profile from './Profile'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { ProfileAPI } from '../../api/api'
+import { withAuthRedirect } from './../../hoc/withAuthRedirect'
+import { compose } from 'redux'
 //import s from './Profile.module.css'
 
 class ProfileContainer extends React.Component {
 
 	componentDidMount() {
 		let userId = this.props.match.params.userId || 20226
-		ProfileAPI.getProfile(userId)
-		//axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-    .then(data => {
-
-      //console.log("Mount ", response)
-      this.props.setUserProfile(data)
-      /*this.props.setTotalUsersCount(response.data.totalCount)
-      this.props.setFetching(false)*/
-    })
+		this.props.getUserProfile(userId)
+		this.props.getStatus(userId)
 	}
 	
 	render() {
 		return (
-			<Profile {...this.props} />
+			<Profile profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus} />
 		)
 	}
 }
@@ -31,20 +25,27 @@ class ProfileContainer extends React.Component {
 				newPostText={props.profilePage.newPostText}
 				dispatch={props.dispatch}*/
 
+//let AuthRedirectComponent = withAuthRedirect(ProfileContainer)
+
 let mapStateToProps = state => {
 	return {
-		newPostText: state.profilePage.newPostText,
 		posts: state.profilePage.posts,
-		profile: state.profilePage.profile
+		profile: state.profilePage.profile,
+		status: state.profilePage.status
 	}
 }
 
-let WithUserDataContainerComponent = withRouter(ProfileContainer)
+//let WithUserDataContainerComponent = withRouter(AuthRedirectComponent)
 
-export default connect(mapStateToProps,
-	{
-		updateNewPost,
-		addPost,
-		setUserProfile
-	}
-)(WithUserDataContainerComponent)
+export default compose(
+	connect(mapStateToProps,
+		{
+			addPost,
+			getUserProfile,
+			getStatus,
+			updateStatus
+		}
+	),
+	withRouter,
+	withAuthRedirect
+)(ProfileContainer)

@@ -104,7 +104,7 @@ export const setPage = currentPage => ({
   currentPage
 })
 
-export const setTotalUsersCount = totalUsersCount => ({
+const setTotalUsersCount = totalUsersCount => ({
   type: SET_TOTAL_COUNT,
   totalUsersCount
 })
@@ -136,7 +136,7 @@ export const getUsers = (currentPage, pageSize) => {
 export const followThunk = userId => {
   return dispatch => {
     dispatch(toggleFollowingProgress(true, userId))
-    UsersAPI.setFollow(userId)
+    UsersAPI.follow(userId)
     .then(data => {
       if(data.resultCode === 0) {
         dispatch(follow(userId))
@@ -149,7 +149,7 @@ export const followThunk = userId => {
 export const unfollowThunk = userId => {
   return dispatch => {
     dispatch(toggleFollowingProgress(true, userId))
-    UsersAPI.delFollow(userId)
+    UsersAPI.unfollow(userId)
     .then(data => {
       if(data.resultCode === 0) {
         dispatch(unfollow(userId))
@@ -158,5 +158,6 @@ export const unfollowThunk = userId => {
     })
   }
 }
+
 
 export default usersReducer

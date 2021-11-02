@@ -28,7 +28,6 @@ const Users = (props) => {
       </div>
       {
         props.users.map(u => <div className={s.wrapper} key={u.id}>
-
           <span className={s.phWrap}>
             <div>
               <NavLink to={'/profile/' + u.id}>
@@ -63,11 +62,11 @@ const Users = (props) => {
             <span>
               <div className={s.names}>{u.name}</div>
               <br />
-              <div className={s.names}>{u.status}</div>
+              <div className={s.names}>{u.status || "Empty status"}</div><br />
             </span>
             <span>
-              <div className={s.location}>{"u.location.city"}</div>, 
-              <div className={s.location}>{"u.location.country"}</div>
+              <div className={s.location}>{"u.location.city"}</div>
+              <div className={s.location}>{"u.location.country"}, </div>
               <div></div>
             </span>
           </span>

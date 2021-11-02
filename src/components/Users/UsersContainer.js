@@ -4,6 +4,8 @@ import { setUsers, setPage, toggleFollowingProgress, getUsers, followThunk, unfo
 import Users from './Users'
 import Preloader from '../common/Preloader/Preloader'
 import { withRouter } from 'react-router-dom'
+//import { withAuthRedirect } from '../../hoc/withAuthRedirect'
+import { compose } from 'redux'
 //import { UsersAPI } from '../../api/api'
 //import thunk from 'redux-thunk'
 
@@ -16,11 +18,9 @@ class UsersContainer extends React.Component {
     if(this.props.match.params === undefined || this.props.match.params.page === undefined) {
       currentPage = this.props.currentPage
       this.props.getUsers(currentPage, this.props.pageSize)
-      console.log("Mount")
     } else {
       currentPage = Number.parseInt(this.props.match.params.page)
       this.onPageChanged(currentPage)
-      console.log("PageCh")
     }
     
   }
@@ -83,6 +83,7 @@ class UsersContainer extends React.Component {
 
 // Container first react-redux connect
 
+
 let mapStateToProps = state => {
   return {
     users: state.usersPage.users,
@@ -94,11 +95,13 @@ let mapStateToProps = state => {
   }
 }
 
-let WithUserDataContainerComponent = withRouter(UsersContainer)
-export default connect(mapStateToProps, 
-  {
-    setUsers, followThunk,
-    setPage, unfollowThunk,
-    toggleFollowingProgress, getUsers
-  }
-)(WithUserDataContainerComponent)
+
+export default compose(
+  connect(mapStateToProps, {
+      setUsers, followThunk,
+      setPage, unfollowThunk,
+      toggleFollowingProgress, getUsers
+  }),
+  withRouter,
+  //withAuthRedirect
+)(UsersContainer)

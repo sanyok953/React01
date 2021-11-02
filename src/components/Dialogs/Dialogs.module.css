@@ -18,8 +18,8 @@
 }
 
 .sendMessageArea button {
-  margin: 30% 50%;
-  transform: translate(-30%, -50%);
+  /*margin: 30% 50%;
+  transform: translate(-30%, -50%);*/
 }
 
 .active {

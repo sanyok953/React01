@@ -15,12 +15,12 @@ export const UsersAPI = {
     .then(response => response.data)
   },
 
-  setFollow(uid) {
+  follow(uid) {
     return instanse.post(`follow/${uid}`, {})
     .then(response => response.data)
   },
 
-  delFollow(uid) {
+  unfollow(uid) {
     return instanse.delete(`follow/${uid}`)
     .then(response => response.data)
   }
@@ -29,9 +29,15 @@ export const UsersAPI = {
 
 export const ProfileAPI = {
 
-  getProfile(uid) {
-    return instanse.get(`profile/${uid}`)
+  getProfile(userId) {
+    return instanse.get(`profile/${userId}`)
     .then(response => response.data)
+  },
+  getStatus(userId) {
+    return instanse.get(`profile/status/` + userId)
+  },
+  updateStatus(status) {
+    return instanse.put(`profile/status`, { status })
   }
 
 }

@@ -1,6 +1,8 @@
+import { ProfileAPI } from '../api/api'
+
 const ADD_POST = 'ADD_POST'
-const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
+const SET_STATUS = 'SET_STATUS'
 
 let initialState = {
   posts: [
@@ -12,7 +14,7 @@ let initialState = {
     { id: 5, likesCount: 62, post: 'I`m fine thank you and you' }
   ],
   profile: null,
-  newPostText: 'Start'
+  status: ""
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -23,11 +25,10 @@ const profileReducer = (state = initialState, action) => {
         posts: [...state.posts,
           {
             id: state.posts.length, // next index from count elements
-            post: state.newPostText,
+            post: action.title,
             likesCount: 0
           }
-        ],
-        newPostText: ''
+        ]
       }
       /*let newPost = {
         id: state.posts.length, // next index from count elements
@@ -40,14 +41,11 @@ const profileReducer = (state = initialState, action) => {
       stateCopy.newPostText = ''
       return stateCopy*/
     }
-    case UPDATE_NEW_POST_TEXT: {
+    case SET_STATUS: {
       return {
         ...state,
-        newPostText: action.text
+        status: action.status
       }
-      /*let stateCopy = {...state}
-      stateCopy.newPostText = action.text
-      return stateCopy*/
     }
     case SET_USER_PROFILE: {
       return {
@@ -61,18 +59,52 @@ const profileReducer = (state = initialState, action) => {
 }
 
 // ActionCreators
-export const addPost = () => ({
-  type: ADD_POST
+export const addPost = title => ({
+  type: ADD_POST,
+  title
 }) // Сохранение нового поста в state.profilePage из MyPosts
 
-export const updateNewPost = text => ({ // Изменение поля ввода в MyPosts
-  type: UPDATE_NEW_POST_TEXT,
-  text
+const setStatus = status => ({ // Изменение статуса
+  type: SET_STATUS,
+  status
 })
 
-export const setUserProfile = profile => ({ // Информация о пользователе
+const setUserProfile = profile => ({ // Информация о пользователе
   type: SET_USER_PROFILE,
   profile
 })
+
+// Thunks
+
+export const getStatus = userId => {
+  return dispatch => {
+    ProfileAPI.getStatus(userId) // Получение статуса с сервера
+    .then(data => {
+      if(data.status === 200)
+        dispatch(setStatus(data.data)) // Запись полученного статуса в state
+    })
+  }
+}
+
+export const updateStatus = status => {
+  return dispatch => {
+    ProfileAPI.updateStatus(status) // Обновление статуса на сервере
+    .then(response => {
+      if(response.data.resultCode === 0)
+        dispatch(setStatus(status)) // Если обновлён то заносим в state
+    })
+  }
+}
+
+export const getUserProfile = userId => {
+  return dispatch => {
+		ProfileAPI.getProfile(userId)
+    .then(data => {
+      dispatch(setUserProfile(data))
+      /*this.props.setTotalUsersCount(response.data.totalCount)
+      this.props.setFetching(false)*/
+    })
+  }
+}
 
 export default profileReducer
